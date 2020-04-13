@@ -1,6 +1,11 @@
+#include <string>
+#include <iostream>
+#include <stdexcept>
+
 #ifndef FamilyTree
 #define FamilyTree
 
+using namespace std;
 namespace MyTree{
 
 struct node
@@ -25,10 +30,22 @@ public:
 class FamilyTree
 {
     public:
-        Tree();
-        ~Tree();
- 
-    private:
+        Tree(string name){
+           root=new node();
+           this->root.setname(name);
+        }
+        ~Tree()
+             {
+      if(this->left!=null){
+        delete(this->left);
+      }
+      if(this->right!=null){
+        delete(this->right);
+      }
+        delete(this);
+    }
+      
+
         void addFather(string name, node *leaf);
         void addMother(string name, node *leaf);
         string find(int key, node *leaf);

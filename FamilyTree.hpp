@@ -1,10 +1,10 @@
 #include <string>
 #include <iostream>
 #include <stdexcept>
+#include <stdio.h>
 
 #ifndef FamilyTree
 #define FamilyTree
-
 using namespace std;
 
 namespace family
@@ -12,13 +12,12 @@ namespace family
 
 struct node
 {
-private:
+public:
   int height;
   string name;
   node *left;
   node *right;
 
-public:
   void setname(string name);
   string getname();
   void setheight(int height);
@@ -37,31 +36,33 @@ public:
 
   Tree(string name)
   {
-    root = new node();
-    this->root.name=name;
-    this->root.height=0;
+    this->root = new node();
+    this->root->name=name;
+    this->root->height=0;
 
   }
   ~Tree()
   {
 
-    if (this->left != null)
+    if (this->root->left != NULL)
     {
-      delete (this->left);
+      remove(this->root->left->name);
     }
-    if (this->right != null)
+    if(this->root->right != NULL)
     {
-      delete (this->right);
+      remove(this->root->right->name);
     }
-    delete (this);
+    else{
+    delete(this);
+    }
   }
 
-  void addFather(string son, string father);
-  void addMother(string son, string mother);
-  string find(int key, node *leaf);
-  string relation(string name, node *leaf);
-  void delete (string name, node *leaf);
-  void display(node *leaf);
+  Tree& addFather(string son, string father);
+  Tree& addMother(string son, string mother);
+  string find(string relation);
+  string relation(string name);
+  void remove(string name);
+  void display();
 
   node *root;
 

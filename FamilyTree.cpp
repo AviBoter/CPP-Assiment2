@@ -4,6 +4,8 @@
 #include <stdexcept>
 #include <bits/stdc++.h>
 #include <stdbool.h>
+#include <stdio.h>
+#include "FamilyTree.hpp"
 
 using namespace std;
 
@@ -29,15 +31,15 @@ int node::getheight(){
 void node::setright(string name, int height)
 {
   this->right=new node();
-  this->right.setname(name);
-  this->right.setheight(this.height);
+  this->right->setname(name);
+  this->right->setheight(this->height);
 }
 
 void node::setleft(string name, int height)
 {
   this->left=new node();
-  this->left.setname(name);
-  this->left.setheight(this.height);
+  this->left->setname(name);
+  this->left->setheight(this->height);
 }
 
 node* node::getleft(){
@@ -48,46 +50,60 @@ node* node::getright(){
 }
 
 node* node::search(string name){
-if(node::search(this->left,name)!=null){
-    return node::search(this->left,name);
-}
-else if(node::search(this->right,name)!=null){
-  return search(this->right,name);
-}
-else
+// if(node::search(this->left,name)!=NULL){
+//     return node::search(this->left,name);
+// }
+// else if(node::search(this->right,name)!=NULL){
+//   return search(this->right,name);
+// }
+// else
 {
-  return null;
+  return NULL;
 }
 }
 
 
 
 
-Tree::addFather(string son, string father)
+Tree& Tree::addFather(string son, string father)
 {
-  if(root->name.compare(son)!=0){
-  setright(name, this->height + 1);
-  }
+  // if(root->name.compare(son)!=0){
+    this->root->setright(father, this->root->height + 1);
+  // }
 
-  else if(node::search(son)==null){
-    //throw
-  }
-  else{
-    node temp=new node();
+  // else if(node::search(son)==null){
+  //   //throw
+  // }
+  // else{
+  //   node temp=new node();
 
-  }
+  // }
+  cout << "somewhere" << endl;
+  return *this;
 }
-Tree::addMoter(string name)
+Tree& Tree::addMother(string son,string mother)
 {
-  setleft(name, this->height + 1);
+  this->root->setleft(mother, this->root->height + 1);
+  cout << "over" << endl;
+  return *this;
 }
-Tree::relation(string name, node *leaf)
+
+string Tree::relation(string name)
 {
-  cout < "de" < endl;
-  return
+  cout << "the" << endl;
+  return name;
 }
-Tree::find(string name, node *leaf)
+string Tree::find(string name)
 {
-  cout < "dam" < endl;
+  cout << "rainbow" << endl;
+  return name;
+}
+void Tree::remove(string name){
+  cout << "removed" << endl;
+  return;
+}
+
+void Tree::display(){
+  cout << "look! a tree!" << endl;
 }
 }; // namespace MyTree

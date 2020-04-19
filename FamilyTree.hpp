@@ -2,21 +2,47 @@
 #include <iostream>
 #include <stdexcept>
 #include <stdio.h>
-
-#ifndef FamilyTree
-#define FamilyTree
+#include <stdbool.h>
+#include<bits/stdc++.h> 
 using namespace std;
 
-namespace family
-{
+#define COUNT 10 
+#ifndef FamilyTree
+#define FamilyTree
 
-struct node
-{
+namespace family{
+
+
+
+class Tree{
+
 public:
+
+class node{
+
+public:
+
+  char G;
   int height;
   string name;
   node *left;
   node *right;
+
+   node(){
+   this->name=nullptr;
+   this->left=NULL;
+   this->right=NULL;
+   this->height=0;
+   this->G='m';
+  }
+  
+  node(string n){
+   this->name=n;
+   this->left=NULL;
+   this->right=NULL;
+   this->height=0;
+   this->G='m';
+  }
 
   void setname(string name);
   string getname();
@@ -27,34 +53,27 @@ public:
   void setright(string name, int height);
   node *getright();
   node *search(string name);
-
+  void setGender(char g);
+  char getGender();
+  string find(int height,char gender);
+  void print2D(node *root);
+  void print2DUtil(node *root, int space);
+  void Remove(node *leaf);
 }; //node
 
-class Tree
-{
-public:
 
-  Tree(string name)
+
+  node *root;
+
+  Tree(string n)
   {
     this->root = new node();
-    this->root->name=name;
-    this->root->height=0;
-
+    this->root->name=n;
   }
   ~Tree()
   {
-
-    if (this->root->left != NULL)
-    {
-      remove(this->root->left->name);
-    }
-    if(this->root->right != NULL)
-    {
-      remove(this->root->right->name);
-    }
-    else{
+    remove(this->root->name);
     delete(this);
-    }
   }
 
   Tree& addFather(string son, string father);
@@ -64,8 +83,7 @@ public:
   void remove(string name);
   void display();
 
-  node *root;
+  }; //Tree
 
-}; //Tree
 }; // namespace family
 #endif

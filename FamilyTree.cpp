@@ -1,186 +1,171 @@
-
-#include <string>
-#include <iostream>
-#include <stdexcept>
-#include <stdbool.h>
-#include <stdio.h>
 #include "FamilyTree.hpp"
 
 using namespace std;
 
 namespace family{
 
- void family::Tree::node::print2DUtil(node *root, int space){
+ void family::node::print2DUtil(node *root, int space){
    //print2DUtil copied from https://www.geeksforgeeks.org/print-binary-tree-2-dimensions//
     if (root == NULL)  
         return;  
 
     space += COUNT;  
-    family::Tree::node::print2DUtil(root->right, space);   
+    family::node::print2DUtil(root->right, space);   
     cout<<endl;  
     for (int i = COUNT; i < space; i++)  
         cout<<" ";  
     cout<<root->name<<"\n";  
   
-    family::Tree::node::print2DUtil(root->left, space);  
+    family::node::print2DUtil(root->left, space);  
 }  
     
-void family::Tree::node::print2D(node *root){  
+void family::node::print2D(node *root){  
     print2DUtil(root, 0);  
 }   
 
-void family::Tree::node::setname(string NewName){
+void family::node::setname(string NewName){
    this->name=NewName;
 }
 
-void family::Tree::node::setheight(int h){
+void family::node::setheight(int h){
    height=h+1;;
 }
 
-string family::Tree::node::getname(){
+string family::node::getname(){
    return name;
 }
 
-int family::Tree::node::getheight(){
+int family::node::getheight(){
   return height;
 }
-void family::Tree::node::setGender(char g){
+void family::node::setGender(char g){
    this->G=g;
 }
 
-void family::Tree::node::setright(string name, int height){
+void family::node::setright(string name, int height){
   this->right=new node(name);
   this->right->setheight(this->height);
   this->right->setGender('m');
 }
 
-void family::Tree::node::setleft(string name, int height){
+void family::node::setleft(string name, int height){
   this->left=new node(name);
   this->left->setheight(this->height);
   this->left->setGender('f');
 }
 
-family::Tree::node* family::Tree::node::getleft(){
+family::node* family::node::getleft(){
   return this->left;
 }
-family::Tree::node* family::Tree::node::getright(){
+family::node* family::node::getright(){
   return this->right;
 }
+char family::node::getGender(){
+  return this->G;
+}
 
-string family::Tree::node::find(int height,char gender){
-  string ans;
-
-  if(height==1){
-    if(gender=='m' && this->right!=nullptr)
-       ans=this->right->name;
-    if(gender=='f' && this->left!=nullptr)
-     ans=this->left->name;
+  family::node* family::node::search(node *leaf,string name){
+    node *temp;
+  if(leaf->getname().compare(name)==0 || leaf==nullptr){
+    return leaf;
+  }
   
-     return ans;
-   }
-   if(height>1){
-    ans=this->left->find(height-1,gender);
-    if(ans!="")
-      return ans;
-    ans=this->right->find(height-1,gender);
-    if(ans!="")
-      return ans;
-   }
-   return ans;
-}
-
-  node* family::Tree::search(string name){
-  if(this->root){
-    return NULL;
-  }
-  else if(this->name==name){
-    return this;
-  }
   else
-  {
-  node *temp;
-  temp=this->left->search(name);
-  if(temp!=nullptr)
+
+  if(leaf->left){
+  temp=leaf->search(leaf->left,name);
+  if(temp){
     return temp;
-  temp=this->right->search(name);
-  if(temp!=nullptr)
+  }
+  }
+
+  if(leaf->right){
+  temp=leaf->search(leaf->right,name);
+  if(temp){
     return temp;
- }
+  }
+  }
     return nullptr;
+ 
 }
 
-void family::Tree::node::Remove(node *leaf){
-  if (leaf->left != nullptr)
-    {
-      family::Tree::node::Remove(leaf->left);
-    }
-    if(leaf->right != nullptr)
-    {
-      family::Tree::node::Remove(leaf->right);
-    }
-    delete(leaf);
-}
+void family::node::Remove(node *leaf,string name){
+      
+      if(leaf->getleft())
+      leaf->Remove(leaf->left,name);
+      if(leaf->getright())
+      leaf->Remove(leaf->right,name);
+      else
+      delete leaf;
+      return;
+      }
+
 
 Tree& family::Tree::addFather(string son, string father){
-   if(this->root->search(son)==NULL)
+  
+  if(!(*root).search(root,son))
    {
     throw logic_error{"Match not found"};
    }
-
-   else if(root->name.compare(son)==0)
+   else if(root->getname().compare(son)==0)
    {
-    this->root->setright(father, this->root->height + 1);
+    this->root->setright(father, this->root->getheight() + 1);
    }
-
   else
    {
-    node *temp=new node();
-    temp=this->root->search(son);
-     temp->setright(father,temp->height + 1);
-   }
+    node *temp;
+    temp=this->root->search(root,son);
+     temp->setright(father,temp->getheight() + 1);
+    }
+
   return *this;
 }
 
 Tree& family::Tree::addMother(string son,string mother){
-   if(this->root->search(son)==NULL)
+
+   if(!this->root->search(root,son))
    {
     throw logic_error{"Match not found"};
    }
 
-   else if(root->name.compare(son)==0)
+   if(root->getname().compare(son)==0)
    {
-    this->root->setright(mother, this->root->height + 1);
+    this->root->setleft(mother, this->root->getheight() + 1);
    }
 
   else
    {
-    node *temp=new node();
-    temp=this->root->search(son);
-     temp->setright(mother, temp->height + 1);
+    node *temp;
+    temp=this->root->search(root,son);
+     temp->setleft(mother, temp->getheight() + 1);
    }
   return *this;
 }
 
 string family::Tree::relation(string name){
   string ans;
-  if(this->root->search(name)==NULL){
+  node *temp=this->root->search(root,name);
+
+  if(!temp)
+  {
     return "unrealated";
   }
-  else {
-  int height=this->root->height;
-  node *temp=this->root->search(name);
-  int r_height=temp->height-height;
+
+  else
+  {
+  int height=this->root->getheight();
+  int r_height=temp->getheight()-height;
 
     if(r_height==0)
      return "me";
 
     if(r_height==1){
-       if(this->root->left->name.compare(name)==0)
+       if(this->root->getleft()->getname().compare(name)==0)
           return "mother";
           return "father";
      }
     else if(r_height==2){
-        if(temp->G=='m')
+        if(temp->getGender()=='m')
         return "grandfather";
         return "grandmother";
      }
@@ -189,68 +174,99 @@ string family::Tree::relation(string name){
        while(r_height>2)
        {
          ans=ans+"great-";
+         r_height--;
        }
 
-       if(temp->G=='m')
+       if(temp->getGender()=='m')
         ans=ans+"grandfather";
        else
          ans=ans+"grandmother";
     }
+  }
   return ans;
-}
 }
 
 string family::Tree::find(string relation){
-  int h=0;
-  char gender;
+  int h=1;
+  char gender='m';
   string ans;
-  if(relation.substr(0,6).compare("great-"))
+  if(relation.substr(0,6)==string("great-"))
   {
-  while(relation.substr(0,6).compare("great-")==0){
-    relation=relation.substr(7);
-   if(h==0)
+  while(relation.substr(0,6)==string("great-")){
+    relation=relation.substr(6);
+   if(h==1)
      h=3;
    else
      h=h+1;
    }
   }
 
-  else if(relation.length()==11)
+    if(relation.length()==11)
   {
-    if(relation.compare("grandfather")==0)
+    if(relation.substr(0,11)==string("grandfather"))
         gender='m';
     else
       gender='f';
     
-    if(h==0)
+    if(h==1)
     h=2;
    }
 
   else if(relation.length()==6)
   {
-    if(relation.compare("father")==0)
-      gender='m';
-    else
+    if(relation.at(0)=='m')
       gender='f';
-
-    if(h==0)
-      h=1;
   }
 
   else
   {
     throw logic_error{"String not valid!"};
   }
+
   return this->root->find(h,gender);
 }
 
+string family::node::find(int height,char gender){
+  string ans;
+  if(height==1){
+    if(gender=='m'){
+      node *temp=this->getright();
+      if(temp){
+       ans=this->right->getname();
+      }
+    }
+
+    if(gender=='f'){
+      node *temp=this->getleft();
+      if(temp){
+     ans=this->left->getname();
+      }
+    }
+     return ans;
+   }
+   
+   if(height>1){
+     if(this->left!=nullptr)
+    ans=this->left->find(height-1,gender);
+    if(!ans.empty())
+      return ans;
+    if(this->right!=nullptr)  
+    ans=this->right->find(height-1,gender);
+    if(!ans.empty())
+      return ans;
+   }
+   return ans;
+}
+
 void family::Tree::remove(string name){
-  node *temp=this->root->search(name);
-      this->root->Remove(temp);
+  node *temp=this->root->search(root,name);
+  cout<<" "+temp->getname()<<endl;
+  delete temp;
+  //cout<<" "+temp->getname()<<endl;
 }
 
 void family::Tree::display(){
-  this->root->print2D(this->root);
+  root->print2D(this->root);
 }
 
 }; // namespace MyTree

@@ -12,15 +12,9 @@ using namespace std;
 
 namespace family{
 
-
-
-class Tree{
-
-public:
-
 class node{
 
-public:
+private:
 
   char G;
   int height;
@@ -28,20 +22,26 @@ public:
   node *left;
   node *right;
 
+public:
+
    node(){
-   this->name=nullptr;
-   this->left=NULL;
-   this->right=NULL;
-   this->height=0;
-   this->G='m';
+   name=nullptr;
+   left=NULL;
+   right=NULL;
+   height=0;
+   G='m';
   }
   
   node(string n){
-   this->name=n;
-   this->left=NULL;
-   this->right=NULL;
-   this->height=0;
-   this->G='m';
+   name=n;
+   left=NULL;
+   right=NULL;
+   height=0;
+   G='m';
+  }
+
+  ~node(){
+    Remove(this,this->name);
   }
 
   void setname(string name);
@@ -52,27 +52,29 @@ public:
   node *getleft();
   void setright(string name, int height);
   node *getright();
-  node *search(string name);
+  node *search(node *leaf,string name);
   void setGender(char g);
   char getGender();
   string find(int height,char gender);
   void print2D(node *root);
   void print2DUtil(node *root, int space);
-  void Remove(node *leaf);
+  void Remove(node *leaf,string name);
 }; //node
 
+class Tree{
 
+private:
 
-  node *root;
+node *root;  
 
-  Tree(string n)
-  {
-    this->root = new node();
-    this->root->name=n;
+public:
+
+  Tree(string n){
+    this->root=new node(n);
   }
-  ~Tree()
-  {
-    remove(this->root->name);
+
+  ~Tree(){
+    remove(this->root->getname());
     delete(this);
   }
 

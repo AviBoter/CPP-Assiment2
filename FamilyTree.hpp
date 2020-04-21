@@ -41,9 +41,12 @@ public:
   }
 
   ~node(){
-    Remove(this,this->name);
+   this->setname();
+   delete this->left;
+   delete this->right;
   }
-
+  
+  void setname();
   void setname(string name);
   string getname();
   void setheight(int height);
@@ -59,6 +62,7 @@ public:
   void print2D(node *root);
   void print2DUtil(node *root, int space);
   void Remove(node *leaf,string name);
+  node *searchParent(node *leaf,string name);
 }; //node
 
 class Tree{

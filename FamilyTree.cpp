@@ -22,7 +22,9 @@ namespace family{
 void family::node::print2D(node *root){  
     print2DUtil(root, 0);  
 }   
-
+void family::node::setname(){
+  this->name="";
+}
 void family::node::setname(string NewName){
    this->name=NewName;
 }
@@ -86,18 +88,18 @@ char family::node::getGender(){
   }
   }
     return nullptr;
- 
 }
 
 void family::node::Remove(node *leaf,string name){
-      
-      if(leaf->getleft())
-      leaf->Remove(leaf->left,name);
-      if(leaf->getright())
-      leaf->Remove(leaf->right,name);
-      else
-      delete leaf;
-      return;
+    
+      // if(leaf->getleft()!=nullptr)
+      // leaf->Remove(leaf->left,name);
+      // if(leaf->getright()!=nullptr)
+      // leaf->Remove(leaf->right,name);
+      // else
+      // cout<<"b"<<endl;
+      // delete leaf;
+      cout<<"a"<<endl;
       }
 
 
@@ -220,7 +222,7 @@ string family::Tree::find(string relation){
 
   else
   {
-    throw logic_error{"String not valid!"};
+    throw logic_error{"The tree cannot handle the " +relation+ " relation"};
   }
 
   return this->root->find(h,gender);
@@ -260,10 +262,34 @@ string family::node::find(int height,char gender){
 
 void family::Tree::remove(string name){
   node *temp=this->root->search(root,name);
-  cout<<" "+temp->getname()<<endl;
-  delete temp;
-  //cout<<" "+temp->getname()<<endl;
+  if(temp){
+    delete temp;
+  }
 }
+
+//  family::node* family::node::searchParent(node *leaf,string name){
+//     node *temp;
+//   if(leaf->left->getname().compare(name)==0 || leaf->right->getname().compare(name)==0){
+//     return leaf;
+//   }
+  
+//   else
+
+//   if(leaf->left){
+//   temp=leaf->searchParent(leaf->left,name);
+//   if(temp){
+//     return temp;
+//   }
+//   }
+
+//   if(leaf->right){
+//   temp=leaf->searchParent(leaf->right,name);
+//   if(temp){
+//     return temp;
+//   }
+//   }
+//     return nullptr;
+// }
 
 void family::Tree::display(){
   root->print2D(this->root);

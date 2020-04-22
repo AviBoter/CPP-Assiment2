@@ -25,27 +25,32 @@ private:
 public:
 
    node(){
-   name=nullptr;
-   left=NULL;
-   right=NULL;
+   name="me";
+   left=nullptr;
+   right=nullptr;
    height=0;
    G='m';
   }
   
   node(string n){
    name=n;
-   left=NULL;
-   right=NULL;
+   left=nullptr;
+   right=nullptr;
    height=0;
    G='m';
   }
 
   ~node(){
-   this->setname();
-   delete this->left;
-   delete this->right;
+   if(this->getleft()){
+   delete left;
+    this->left=NULL;
+   }
+   if(this->getright()){
+   delete right;
+   this->right=NULL;
+   }
   }
-  
+
   void setname();
   void setname(string name);
   string getname();
@@ -56,13 +61,13 @@ public:
   void setright(string name, int height);
   node *getright();
   node *search(node *leaf,string name);
+  node *_search(node *leaf,string name);
   void setGender(char g);
   char getGender();
-  string find(int height,char gender);
   void print2D(node *root);
   void print2DUtil(node *root, int space);
-  void Remove(node *leaf,string name);
-  node *searchParent(node *leaf,string name);
+  node *findParentM(node *leaf,int h);
+  node *findParentF(node *leaf,int h);
 }; //node
 
 class Tree{
@@ -73,13 +78,15 @@ node *root;
 
 public:
 
+  Tree(){}
+
   Tree(string n){
     this->root=new node(n);
   }
 
   ~Tree(){
-    remove(this->root->getname());
-    delete(this);
+    delete root;
+    
   }
 
   Tree& addFather(string son, string father);
@@ -88,6 +95,7 @@ public:
   string relation(string name);
   void remove(string name);
   void display();
+  node *getroot();
 
   }; //Tree
 

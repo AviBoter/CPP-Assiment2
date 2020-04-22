@@ -1,124 +1,228 @@
-#include "FamilyTree.hpp"
+ 
 #include "doctest.h"
-#include <iostream>
-#include <stdexcept>
+#include "FamilyTree.hpp"
 
+#include <string>
 using namespace std;
 
-TEST_CASE("Noraml Tree"){
-	family::Tree T ("Yosef"); // Yosef is The "rooT" of The Tree (The youngesT person).
-	T.addFather("Yosef", "Yaakov")   // Tells The Tree ThaT The faTher of Yosef is Yaakov.
-	 .addMother("Yosef", "Rachel")   // Tells The Tree ThaT The moTher of Yosef is Rachel.
+TEST_CASE("Reference add Tree case") { 
+	family::Tree T("Yosef");
+	T.addFather("Yosef", "Yaakov")
+	 .addMother("Yosef", "Rachel")
 	 .addFather("Yaakov", "Isaac")
 	 .addMother("Yaakov", "Rivka")
 	 .addFather("Isaac", "Avraham")
 	 .addFather("Avraham", "Terah");
+}
 
-	
-     CHECK( T.relation("Yaakov").compare("father")==0);
-     CHECK( T.relation("Rachel").compare("mother")==0);
-     CHECK( T.relation("Rivka").compare("grandmother")==0);
-     CHECK( T.relation("Avraham").compare("great-grandfather")==0);
-     CHECK( T.relation("Terah").compare("great-great-grandfather")==0);
-     CHECK( T.relation("xyz").compare("unrelated")==0);
-     CHECK( T.relation("Yosef").compare("me")==0);
-     CHECK(T.relation("Yaakov").compare("x")==-1);
-     CHECK(T.relation("Rachel").compare("x")==-1);
-     CHECK(T.relation("Rivka").compare("x")==-1);
-     CHECK(T.relation("Avraham").compare("x")==-1);
-     CHECK(T.relation("Yosef").compare("x")==-1);
-     CHECK(T.relation("Isaac").compare("x")==-1);
-     CHECK(T.relation("Yaakov").compare("yy")==-1);
-     CHECK(T.relation("Rivka").compare("yy")==-1);
-     CHECK(T.relation("Avraham").compare("yy")==-1);
-     CHECK(T.relation("Terah").compare("yy")==-1);
-     CHECK(T.relation("xyz").compare("yy")==-1);
-     CHECK(T.relation("Yaakov").compare("yes")==-1);
-     CHECK(T.relation("Yaakov").compare("q")==-1);
-     CHECK(T.relation("Yaakov").compare("w")==-1);
-     CHECK(T.relation("Yaakov").compare("e")==-1);
-     CHECK(T.relation("Yaakov").compare("r")==-1);
-     CHECK(T.relation("Yaakov").compare("T")==-1);
-     CHECK(T.relation("Yaakov").compare("y")==-1);
-     CHECK(T.relation("Yaakov").compare("u")==-1);
-     CHECK(T.relation("Yaakov").compare("i")==-1);
-     CHECK(T.relation("Yaakov").compare("o")==-1);
-     CHECK(T.relation("Yaakov").compare("p")==-1);
-     CHECK(T.relation("Yaakov").compare("a")==-1);
-     CHECK(T.relation("Yaakov").compare("s")==-1);
-     CHECK(T.relation("Yaakov").compare("d")==-1);
-     CHECK(T.relation("Yaakov").compare("f")==-1);
-     CHECK(T.relation("Yaakov").compare("g")==-1);
-     CHECK(T.relation("Yaakov").compare("h")==-1);
-     CHECK(T.relation("Yaakov").compare("j")==-1);
-     CHECK(T.relation("Yaakov").compare("k")==-1);
-     CHECK(T.relation("Yaakov").compare("l")==-1);
-     CHECK(T.relation("Yaakov").compare("z")==-1);
-     CHECK(T.relation("Yaakov").compare("v")==-1);
-     CHECK(T.relation("Yaakov").compare("b")==-1);
-     CHECK(T.relation("Yaakov").compare("n")==-1);
-     CHECK(T.relation("Yaakov").compare("m")==-1);
-     CHECK(T.relation("Yaakov").compare("xc")==-1);
-     CHECK(T.relation("Yaakov").compare("c")==-1);
-     CHECK(T.relation("Rivka").compare("q")==-1);
-     CHECK(T.relation("Rivka").compare("w")==-1);
-     CHECK(T.relation("Rivka").compare("e")==-1);
-     T.remove("Yaakov");
-     CHECK(T.relation("Rivka").compare("r")==-1);
-     CHECK(T.relation("Rivka").compare("Tx")==-1);
-     CHECK(T.relation("Rivka").compare("y")==-1);
-     CHECK(T.relation("Rivka").compare("u")==-1);
-     CHECK(T.relation("Rivka").compare("ii")==-1);
-     CHECK(T.relation("Rivka").compare("f")==-1);
-     CHECK(T.relation("Rivka").compare("g")==-1);
-     CHECK(T.relation("Rivka").compare("h")==-1);
-     CHECK(T.relation("Rivka").compare("j")==-1);
-     CHECK(T.relation("Rivka").compare("k")==-1);
-     CHECK(T.relation("Rivka").compare("mm")==-1);
-     CHECK(T.relation("Rivka").compare("n")==-1);
-     CHECK(T.relation("Rivka").compare("b")==-1);
-     CHECK(T.relation("Rivka").compare("v")==-1);
-     CHECK(T.relation("Rivka").compare("c")==-1);
-     CHECK(T.relation("Rivka").compare("ccc")==-1);
-     CHECK(T.relation("Rivka").compare("ds")==-1);
-     CHECK(T.relation("Rivka").compare("fg")==-1);
-     CHECK(T.relation("Rivka").compare("ghh")==-1);
-     CHECK(T.relation("Rivka").compare("kj")==-1);
-     CHECK(T.relation("Rivka").compare("bv")==-1);
-     CHECK(T.relation("Rivka").compare("yT")==-1);
-     CHECK(T.relation("Rivka").compare("yTy")==-1);
-     CHECK(T.relation("Rivka").compare("uov")==-1);
-     CHECK(T.relation("Rivka").compare("pp")==-1);
-     CHECK(T.relation("Rivka").compare("lll")==-1);
-    
-     
-    
-    CHECK(T.find("mother").compare("Rachel")==0);
-    CHECK(T.find("great-great-grandfather").compare("Terah")==0);
-    CHECK(T.find("greaT-grandfaTher").compare("Avraham")==0);
-    CHECK(T.find("grandmoTher").compare("Rivka")==0);
-    CHECK(T.find("q").compare("Yaakov")==0);
-    CHECK(T.find("w").compare("mother")==1);
-    CHECK(T.find("e").compare("mother")==1);
-     CHECK(T.find("r").compare("mother")==1);
-     CHECK(T.find("y").compare("mother")==1);
-     CHECK(T.find("gd").compare("mother")==1);
-     CHECK(T.find("p").compare("mother")==1);
-     CHECK(T.find("b").compare("mother")==1);
-     CHECK(T.find("v").compare("mother")==1);
-     CHECK(T.find("c").compare("mother")==1);
-     CHECK(T.find("ead").compare("mother")==1);
-     CHECK(T.find("xvc").compare("great-great-grandfather")==1);
-     CHECK(T.find("gtre").compare("great-great-grandfather")==1);
-     CHECK(T.find("tgr").compare("great-great-grandfather")==1);
-     CHECK(T.find("rte").compare("great-great-grandfather")==1);
-     CHECK(T.find("fv").compare("great-great-grandfather")==1);
-     CHECK(T.find("w").compare("great-great-grandfather")==1);
-     CHECK(T.find("e").compare("great-great-grandfather")==1);
-     CHECK(T.find(" vd").compare("great-great-grandfather")==1);
-     CHECK(T.find("r").compare("great-great-grandfather")==1);
-     CHECK(T.find("aa").compare("great-great-grandfather")==1);
-     CHECK(T.find("aaa").compare("great-great-grandfather")==1);
-     CHECK(T.find("abaea").compare("great-great-grandfather")==1);
-     CHECK(T.find("awes").compare("great-great-grandfather")==1);
+TEST_CASE("Yosef Tree case") {  
+	// Add test case
+	family::Tree T("Yosef");
+	T.addFather("Yosef", "Yaakov");
+	T.addMother("Yosef", "Rachel");
+	CHECK_THROWS_AS(T.addFather("Yosef", "Yaakov"),exception);
+	CHECK_THROWS_AS(T.addMother("Yosef", "Rivka"),exception);
+	T.addFather("Yaakov", "Isaac");
+	T.addMother("Yaakov", "Rivka");
+	T.addFather("Rachel", "Avi");
+	T.addMother("Rachel", "Ruti");
+	T.addFather("Isaac", "Avraham");
+	T.addMother("Isaac", "Ruti");
+	CHECK_THROWS_AS(T.addFather("Isaac", "Israel"),exception);
+	CHECK_THROWS_AS(T.addMother("Isaac", "Ruti"),exception);
+	T.addFather("Avraham", "Yosi");
+	T.addMother("Avraham", "Shelly");
+	T.addFather("Avi", "Israel");
+	T.addMother("Avi", "Sara");
+	CHECK_THROWS_AS(T.addFather("Avraham", "Avraham"),exception);
+	CHECK_THROWS_AS(T.addMother("Avraham", "Sara"),exception);
+	 
+	// Relation test case
+	CHECK(T.relation("Yaakov") == string("father"));
+	CHECK(T.relation("Rachel") == string("mother"));
+	CHECK(T.relation("Isaac") == string("grandfather"));
+	CHECK(T.relation("Rivka") == string("grandmother"));
+	CHECK(T.relation("Avi") == string("grandfather"));
+	CHECK((T.relation("Ruti") == string("grandmother") || T.relation("Ruti") == string("great-grandmother")));
+	CHECK(T.relation("Avraham") == string("great-grandfather"));
+	CHECK((T.relation("Ruti") == string("grandmother") || T.relation("Ruti") == string("great-grandmother")));
+	CHECK(T.relation("Israel") == string("great-grandfather"));
+	CHECK(T.relation("Sara") == string("great-grandmother"));
+	CHECK(T.relation("Yosi") == string("great-great-grandfather"));
+    CHECK(T.relation("Shelly") == string("great-great-grandmother"));
+
+    CHECK(T.relation("xyz") == string("unrelated"));
+	CHECK(T.relation("Omer") == string("unrelated"));
+	CHECK(T.relation("Ariel") == string("unrelated"));
+	CHECK(T.relation(" ") == string("unrelated"));
+	CHECK(T.relation("  Ariel") == string("unrelated"));
+
+	// Find test case
+	CHECK(T.find("father") == string("Yaakov"));
+	CHECK(T.find("mother") == string("Rachel"));
+	CHECK((T.find("grandfather") == string("Isaac") || T.find("grandfather") == string("Avi")));
+	//T.display();
+	CHECK((T.find("grandmother") == string("Rivka") || T.find("grandmother") == string("Ruti")));
+	CHECK((T.find("great-grandmother") == string("Sara") || T.find("great-grandmother") == string("Ruti")));
+	CHECK((T.find("great-grandfather") == string("Avraham") || T.find("great-grandfather") == string("Israel")));
+	CHECK(T.find("great-great-grandfather") == string("Yosi"));
+	CHECK(T.find("great-great-grandmother") == string("Shelly"));
+
+	CHECK_THROWS_AS(T.find("grandfatrher"),exception);
+	CHECK_THROWS_AS(T.find("great"),exception);
+	CHECK_THROWS_AS(T.find(" "),exception);
+	CHECK_THROWS_AS(T.find("   great"),exception);
+	CHECK_THROWS_AS(T.find("grandfatrher   "),exception);
+	CHECK_THROWS_AS(T.find("great,great,grandmother"),exception);
+	CHECK_THROWS_AS(T.find("great?grandmother"),exception);
+	CHECK_THROWS_AS(T.find("great grandmother"),exception);
+
+    // Remove test case
+	//CHECK_THROWS_AS(T.remove("Yosef"),exception);
+	CHECK_THROWS_AS(T.remove(" "),exception);
+	CHECK_THROWS_AS(T.remove("xyz"),exception);
+	CHECK_THROWS_AS(T.remove("Ariel"),exception);
+	CHECK_THROWS_AS(T.remove("  Rivka"),exception);
+
+	T.remove("Yosi");
+	CHECK_THROWS_AS(T.find("great-great-grandfather"),exception);
+	T.display();
+	T.addFather("Avraham", "Ido");
+	T.remove("Avi");
+	CHECK_THROWS_AS(T.addFather("Avi", "Israel"),exception);
+	T.addFather("Rachel", "Shmual");
+	T.remove("Isaac");
+	T.remove("Rivka");
+	T.remove("Ruti");
+	CHECK_THROWS_AS(T.find("grandmother"),exception);
+	CHECK_THROWS_AS(T.addFather("Isaac", "Avraham"),exception);
+	CHECK_THROWS_AS(T.addMother("Isaac", "Ruti"),exception);
+	CHECK_THROWS_AS(T.addFather("Rivka", "Israel"),exception);
+	CHECK_THROWS_AS(T.addMother("Rivka", "Sara"),exception);
+	T.remove("Yaakov");
+	T.remove("Rachel");
+	CHECK_THROWS_AS(T.find("father"),exception);
+	CHECK_THROWS_AS(T.find("mother"),exception);
+	CHECK_THROWS_AS(T.addFather("Yaakov", "Avraham"),exception);
+	CHECK_THROWS_AS(T.addMother("Yaakov", "Ruti"),exception);
+	CHECK_THROWS_AS(T.addFather("Rachel", "Avraham"),exception);
+	CHECK_THROWS_AS(T.addMother("Rachel", "Ruti"),exception);
+ }
+
+TEST_CASE("Strange string Tree case") {  
+	// Add test case
+	family::Tree T("OliVeR$");
+	//T.display();
+	 T.addFather("OliVeR$", "fEliXX");
+	T.addMother("OliVeR$", "#miA");
+	CHECK_THROWS_AS(T.addFather("OliVeR$", "Yaa kov"),exception);
+	CHECK_THROWS_AS(T.addMother("OliVeR$", "Rivka"),exception);
+	T.addFather("fEliXX", "eLi9");
+	T.addMother("fEliXX", "IRis-");
+	T.addFather("#miA", "osC7ar");
+	T.addMother("#miA", "AvA");
+	T.addFather("IRis-", "le0");
+	T.addMother("IRis-", "aB3igaIl");
+	CHECK_THROWS_AS(T.addFather("IRis-", "Israel"),exception);
+	CHECK_THROWS_AS(T.addMother("IRis-", "Ruti"),exception);
+	 T.display();
+	// Relation test case
+	CHECK(T.relation("fEliXX") == string("father"));
+	CHECK(T.relation("#miA") == string("mother"));
+	CHECK(T.relation("eLi9") == string("grandfather"));
+	CHECK(T.relation("IRis-") == string("grandmother"));
+	CHECK(T.relation("osC7ar") == string("grandfather"));
+	CHECK(T.relation("AvA") == string("grandmother"));
+	CHECK(T.relation("le0") == string("great-grandfather"));
+	CHECK(T.relation("aB3igaIl") == string("great-grandmother"));
+
+    CHECK(T.relation("fEli XX") == string("unrelated"));
+	CHECK(T.relation("&miA") == string("unrelated"));
+	CHECK(T.relation("leo") == string("unrelated"));
+	CHECK(T.relation(" ") == string("unrelated"));
+	CHECK(T.relation("  osC7ar") == string("unrelated"));
+
+	// Find test case
+	CHECK(T.find("father") == string("fEliXX"));
+	CHECK(T.find("mother") == string("#miA"));
+	CHECK((T.find("grandfather") == string("eLi9") || T.find("grandfather") == string("osC7ar")));
+	CHECK((T.find("grandmother") == string("IRis-") || T.find("grandmother") == string("AvA")));
+	CHECK(T.find("great-grandfather") == string("le0"));
+	CHECK(T.find("great-grandmother") == string("aB3igaIl"));
+
+	CHECK_THROWS_AS(T.find("grandfatrher"),exception);
+	CHECK_THROWS_AS(T.find("great"),exception);
+	CHECK_THROWS_AS(T.find(" "),exception);
+	CHECK_THROWS_AS(T.find("   great"),exception);
+	CHECK_THROWS_AS(T.find("grandfatrher   "),exception);
+	CHECK_THROWS_AS(T.find("great,great,grandmother"),exception);
+	CHECK_THROWS_AS(T.find("great?grandmother"),exception);
+	CHECK_THROWS_AS(T.find("great grandmother"),exception);
+
+	// Remove test case
+	CHECK_THROWS_AS(T.remove("OliVeR$"),exception);
+
+	T.remove("aB3igaIl");
+	CHECK_THROWS_AS(T.find("great-grandmother"),exception);
+	T.addMother("IRis-", "aB3igaIl");
+	T.remove("fEliXX");
+	CHECK_THROWS_AS(T.addFather("eLi9", "Israel"),exception);
+	CHECK_THROWS_AS(T.addMother("eLi9", "Ruti"),exception);
+	CHECK_THROWS_AS(T.find("great-grandfather"),exception);
+	T.addFather("OliVeR$", "fEliXX");
+	T.remove("osC7ar");
+	CHECK_THROWS_AS(T.find("grandfather"),exception);
+	T.remove("#miA");
+	CHECK_THROWS_AS(T.addFather("#miA", "Avraham"),exception);
+	CHECK_THROWS_AS(T.addMother("#miA", "Ruti"),exception);
+	T.remove("fEliXX");
+	CHECK_THROWS_AS(T.find("father"),exception);
+	CHECK_THROWS_AS(T.find("mother"),exception);
+}
+
+TEST_CASE("Empty string Tree case") {  
+	// Add test case
+	family::Tree T (" ");
+	T.addFather(" ", "  ");
+	T.addMother(" ", "   ");
+	CHECK_THROWS_AS(T.addFather(" ", "Yakov"),exception);
+	CHECK_THROWS_AS(T.addMother(" ", "     "),exception);
+	T.addFather("  ", "    ");
+	T.addMother("  ", "     ");
+	CHECK_THROWS_AS(T.addFather("  ", "         "),exception);
+	CHECK_THROWS_AS(T.addMother("  ", "Rut  i"),exception);
+	 
+	// Relation test case
+	CHECK(T.relation("  ") == string("father"));
+	CHECK(T.relation("   ") == string("mother"));
+	CHECK(T.relation("    ") == string("grandfather"));
+	CHECK(T.relation("     ") == string("grandmother"));
+
+    CHECK(T.relation("fli XX") == string("unrelated"));
+	CHECK(T.relation("leo") == string("unrelated"));
+	CHECK(T.relation("  osC7ar") == string("unrelated"));
+
+	// Find test case
+	CHECK(T.find("father") == string("  "));
+	CHECK(T.find("mother") == string("   "));
+	CHECK(T.find("grandfather") == string("    "));
+	CHECK(T.find("grandmother") == string("     "));
+
+    CHECK_THROWS_AS(T.find("  "),exception);
+	CHECK_THROWS_AS(T.find("great"),exception);
+	CHECK_THROWS_AS(T.find("   great"),exception);
+
+	// Remove test case
+	CHECK_THROWS_AS(T.remove(" "),exception);
+
+	T.remove("     ");
+	CHECK_THROWS_AS(T.find("grandmother"),exception);
+	T.remove("  ");
+	CHECK_THROWS_AS(T.addFather("  ", "     ");,exception);
+	CHECK_THROWS_AS(T.addMother("  ", "  Ru ti");,exception);
+	CHECK_THROWS_AS(T.find("father"),exception);
+	T.remove("   ");
+	CHECK_THROWS_AS(T.find("mother"),exception);
+	CHECK_THROWS_AS(T.addFather("   ", "        ");,exception);
+	CHECK_THROWS_AS(T.addMother("   ", "Rut   i ");,exception);
 }

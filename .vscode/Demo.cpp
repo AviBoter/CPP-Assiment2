@@ -22,7 +22,7 @@ int main() {
     // T.remove("Yosi");
     // T.addFather("Avraham", "Ido");
 	
-	   T.display(); 
+	//  T.display(); 
     T.find("father");
     
 	 cout << T.relation("Yaakov") << endl;  // prints "father"

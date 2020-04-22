@@ -28,15 +28,15 @@ void family::node::setname(string NewName){
 }
 
 void family::node::setheight(int h){
-   this->height=h+1;;
+   height=h+1;;
 }
 
 string family::node::getname(){
-   return this->name;
+   return name;
 }
 
 int family::node::getheight(){
-  return this->height;
+  return height;
 }
 void family::node::setGender(char g){
    this->G=g;
@@ -65,37 +65,15 @@ char family::node::getGender(){
 }
 
   family::node* family::node::search(node *leaf,string name){
-
-  if(leaf->getname().compare(name)==0 || leaf==NULL){
+    node *temp;
+  if(leaf->getname().compare(name)==0 || leaf==nullptr){
     return leaf;
   }
   
   else
 
   if(leaf->getleft()){
-  if(leaf->search(leaf->getleft(),name)){
-    return leaf->search(leaf->getleft(),name);
-  }
-  }
-  //getright()
-  //getleft()
-  if(leaf->getright()){
-  if(leaf->search(leaf->getright(),name))
-  return leaf->search(leaf->getleft(),name);
-  }
-    return NULL;
-}
-
-family::node* family::node::_search(node *leaf,string name){
-    node *temp=NULL;
-  if(leaf->getname().compare(name)==0 || leaf==NULL){
-    return leaf;
-  }
-  
-  else
-
-  if(leaf->getleft()){
-  temp=leaf->_search(leaf->getleft(),name);
+  temp=leaf->search(leaf->getleft(),name);
   if(temp){
     return temp;
   }
@@ -103,21 +81,22 @@ family::node* family::node::_search(node *leaf,string name){
   //getright()
   //getleft()
   if(leaf->getright()){
-  temp=leaf->_search(leaf->getright(),name);
+  temp=leaf->search(leaf->getright(),name);
   if(temp){
     return temp;
   }
   }
     return nullptr;
 }
+
 Tree& family::Tree::addFather(string son, string father){
   
-  if(!(*root)._search(root,son))
+  if(!(*root).search(root,son))
    {
     throw logic_error{"Match not found"};
    }
  // cout<<(*root).search(root,son)->getname()<<endl;
-   if((*root)._search(root,son)->getright() && (*root)._search(root,son)->getright()->getname()!=""){
+   if((*root).search(root,son)->getright() && (*root).search(root,son)->getright()->getname()!=""){
      throw logic_error{"Double insert"};
    }
    else if(root->getname().compare(son)==0)
@@ -127,7 +106,7 @@ Tree& family::Tree::addFather(string son, string father){
   else
    {
     node *temp;
-    temp=this->root->_search(root,son);
+    temp=this->root->search(root,son);
      temp->setright(father,temp->getheight() + 1);
     }
 
@@ -136,12 +115,12 @@ Tree& family::Tree::addFather(string son, string father){
 
 Tree& family::Tree::addMother(string son,string mother){
 
-   if(!this->root->_search(root,son))
+   if(!this->root->search(root,son))
    {
     throw logic_error{"Match not found"};
    }
 
-   if((*root)._search(root,son)->getleft()!=NULL){
+   if((*root).search(root,son)->getleft()!=NULL){
      throw logic_error{"Double insert"};
    }
 
@@ -153,7 +132,7 @@ Tree& family::Tree::addMother(string son,string mother){
   else
    {
     node *temp;
-    temp=this->root->_search(root,son);
+    temp=this->root->search(root,son);
      temp->setleft(mother, temp->getheight() + 1);
    }
   return *this;
@@ -161,7 +140,7 @@ Tree& family::Tree::addMother(string son,string mother){
 
 string family::Tree::relation(string name){
   string ans;
-  node *temp=this->root->_search(root,name);
+  node *temp=this->root->search(root,name);
 
   if(!temp)
   {
@@ -208,11 +187,8 @@ string family::Tree::find(string relation){
   char gender='m';
   string ans;
   node *temp=nullptr;
-  // while(relation.at(0)==char(' ')){
-  //   relation=relation.substr(1);
-  // }
-  if(relation.length()<6){
-    throw invalid_argument{"The tree cannot handle that relation"};
+  while(relation.at(0)==char(' ')){
+    relation=relation.substr(1);
   }
   if(relation.substr(0,6)==string("great-"))
   {
@@ -225,7 +201,7 @@ string family::Tree::find(string relation){
    }
   }
 
-    if(relation.substr(0,11)==string("grandfather") || relation.substr(0,11)==string("grandmother"))
+    if(relation.length()==11)
   {
     if(relation.substr(0,11)==string("grandfather"))
         gender='m';
@@ -244,7 +220,7 @@ string family::Tree::find(string relation){
 
   else
   {
-    throw invalid_argument{"The tree cannot handle the " +relation+ " relation"};
+    throw runtime_error{"The tree cannot handle the " +relation+ " relation"};
   }
  // cout<<h<<endl;;
    
@@ -264,23 +240,24 @@ string family::Tree::find(string relation){
     }
    
    if(h>1){
-    if(gender=='f' && root->findParentF(root,h))
+    if(gender=='f' && root->findParentF(root,h)){  
     temp=root->findParentF(root,h);
     if(gender=='m' && root->findParentM(root,h))  
     temp=root->findParentM(root,h);
+
+    
+}
    }
    if(!temp)
-  throw invalid_argument{"The tree cannot handle that relation"};
+throw runtime_error{"The tree cannot handle that relation"};
 
 return temp->getname();
 }
 
 void family::Tree::remove(string name){
-
-  if(this->root->_search(root,name) && root->getname()!=name && name!=string("   ")){
-   // cout<<temp->getname()<<endl;
-    delete this->root->search(root,name);
-    //cout<<this->root->search(root,name)->getname()<<endl;
+  node *temp=this->root->search(root,name);
+  if(temp){
+    delete temp;
   }
   else 
   throw logic_error{"Nothing to remove!"};
@@ -336,7 +313,7 @@ family::node* family::node::findParentF(node *leaf,int h){
     return temp;
   }
   }
- // cout<<leaf->getname()<<endl;
+  cout<<leaf->getname()<<endl;
     return NULL;
 }
 

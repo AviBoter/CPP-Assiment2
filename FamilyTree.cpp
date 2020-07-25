@@ -66,7 +66,7 @@ char family::node::getGender(){
 
   family::node* family::node::search(node *leaf,string name){
 
-  if(leaf->getname().compare(name)==0 || leaf==NULL){
+  if(leaf->getname().compare(name)==0 || !leaf){
     return leaf;
   }
   

@@ -50,6 +50,19 @@ TEST_CASE("Yosef Tree case") {
 	CHECK(T.relation("Sara") == string("great-grandmother"));
 	CHECK(T.relation("Yosi") == string("great-great-grandfather"));
     CHECK(T.relation("Shelly") == string("great-great-grandmother"));
+	CHECK(T.relation("Yaakov") == string("father"));
+	CHECK(T.relation("Rachel") == string("mother"));
+	CHECK(T.relation("Isaac") == string("grandfather"));
+	CHECK(T.relation("Rivka") == string("grandmother"));
+	CHECK(T.relation("Avi") == string("grandfather"));
+	CHECK((T.relation("Ruti") == string("grandmother") || T.relation("Ruti") == string("great-grandmother")));
+	CHECK(T.relation("Avraham") == string("great-grandfather"));
+	CHECK((T.relation("Ruti") == string("grandmother") || T.relation("Ruti") == string("great-grandmother")));
+	CHECK(T.relation("Israel") == string("great-grandfather"));
+	CHECK(T.relation("Sara") == string("great-grandmother"));
+	CHECK(T.relation("Yosi") == string("great-great-grandfather"));
+    CHECK(T.relation("Shelly") == string("great-great-grandmother"));
+
 
     CHECK(T.relation("xyz") == string("unrelated"));
 	CHECK(T.relation("Omer") == string("unrelated"));
